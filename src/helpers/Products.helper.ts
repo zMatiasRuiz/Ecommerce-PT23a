@@ -5,10 +5,15 @@ const APIURL = process.env.NEXT_PUBLIC_API_URL
 export async function getProductsDB(): Promise<IProduct[]> {
     try {
         const response = await fetch(`${APIURL}/products`)
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status} ${response.statusText}`);
+        }
         const products : IProduct[] = await response.json();
         return products
+        
     } catch (error: any) {
-        throw new Error(error)
+        console.error("Error fetching products:", error.message);
+        throw new Error("Failed to fetch products. Please try again later.");
     }
 }
 
